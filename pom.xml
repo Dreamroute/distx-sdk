@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.dreamroute</groupId>
+	<artifactId>distx-sdk</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<java.version>1.8</java.version>
+		<junit.version>4.12</junit.version>
+		<vjkit.version>1.0.8</vjkit.version>
+		<druid.version>1.1.14</druid.version>
+		<dozer.version>5.5.1</dozer.version>
+		<lombok.version>1.18.8</lombok.version>
+		<fastjson.version>1.2.56</fastjson.version>
+		<sqlprinter.version>1.5-RELEASE</sqlprinter.version>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring-boot-starter-web.version>2.1.3.RELEASE</spring-boot-starter-web.version>
+		<mapper-spring-boot-starter.version>2.1.5</mapper-spring-boot-starter.version>
+		<rocketmq-spring-boot-starter.version>2.0.3</rocketmq-spring-boot-starter.version>
+		<pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper-spring-boot-starter</artifactId>
+			<version>${mapper-spring-boot-starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>${pagehelper-spring-boot-starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot-starter-web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot-starter-web.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-spring-boot-starter</artifactId>
+			<version>${rocketmq-spring-boot-starter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.dreamroute</groupId>
+			<artifactId>sqlprinter</artifactId>
+			<version>${sqlprinter.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vip.vjtools</groupId>
+			<artifactId>vjkit</artifactId>
+			<version>${vjkit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>${dozer.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>
