@@ -39,14 +39,15 @@ public class TxMessageServiceImpl implements TxMessageService {
     private RocketMQTemplate rocketMQTemplate;
 
     @Value("${rocketmq.pageSize:1}")
-    private String pageSize;
+    private int pageSize;
     @Value("${rocketmq.isTest:false}")
     private boolean isTest;
 
     @Override
     @Transactional
     public int insert(TxMessage message) {
-        message.setCreateTime(new Timestamp(new Date().getTime()));
+        if (message.getCreateTime() != null)
+            message.setCreateTime(new Timestamp(new Date().getTime()));
         return txMessageMapper.insert(message);
     }
 
@@ -57,10 +58,10 @@ public class TxMessageServiceImpl implements TxMessageService {
         TxMessageDel del = BeanMapper.map(msg, TxMessageDel.class);
         del.setCreateTime(new Timestamp(new Date().getTime()));
         int insertResult = txMessageDelService.insert(del);
-        if (insertResult == 1) {
-            log.info("保存tx_message_del表成功");
-        }
-        return txMessageMapper.deleteByPrimaryKey(id);
+        if (insertResult == 1)
+            txMessageMapper.deleteByPrimaryKey(id);
+        log.info("保存tx_message_del表成功, id: {}", id);
+        return 1;
     }
 
     @Override
@@ -73,8 +74,7 @@ public class TxMessageServiceImpl implements TxMessageService {
     @Override
     @Transactional
     public void syncTxMessage2RocketMQ() {
-        int size = Integer.parseInt(pageSize);
-        List<TxMessage> txMsgList = this.selectTxMessageByPage(size);
+        List<TxMessage> txMsgList = this.selectTxMessageByPage(pageSize);
         log.info("查询消息表：{}", JSON.toJSON(txMsgList));
         if (txMsgList != null && !txMsgList.isEmpty()) {
             txMsgList.forEach(txMessage -> {

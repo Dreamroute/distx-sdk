@@ -1,5 +1,8 @@
 package com.github.dreamroute.mq.sdk;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.junit.Test;
@@ -28,7 +31,7 @@ public class MQTest {
     // 事务
     @Test
     public void sendTxMsgTest() throws Exception {
-        Message<String> msg = MessageBuilder.withPayload("tx-msg").build();
+        Message<String> msg = MessageBuilder.withPayload("tx-msg + " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).build();
         TransactionSendResult result = rocketMQTemplate.sendMessageInTransaction("tx-msg", "tx-msg", msg, null);
         System.err.println("事务消息第一次执行结果：" + JSON.toJSONString(result));
         Thread.sleep(Long.MAX_VALUE);
