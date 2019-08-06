@@ -22,14 +22,14 @@ public class SyncListener2 implements RocketMQLocalTransactionListener {
     public RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object arg) {
         // ... local transaction process, return bollback, commit or unknown
         System.err.println("执行事务提交-UNKNOWN: " + JSON.toJSONString(msg));
-        return RocketMQLocalTransactionState.UNKNOWN;
+        return RocketMQLocalTransactionState.COMMIT;
     }
 
     @Override
     public RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
         // ... check transaction status and return bollback, commit or unknown
         System.err.println("执行事务回查-UNKNOWN: " + JSON.toJSONString(msg));
-        return RocketMQLocalTransactionState.UNKNOWN;
+        return RocketMQLocalTransactionState.COMMIT;
     }
 
 }
