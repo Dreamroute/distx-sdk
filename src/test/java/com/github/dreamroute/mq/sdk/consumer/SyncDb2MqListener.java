@@ -1,4 +1,4 @@
-package com.github.dreamroute.mq.sdk.service;
+package com.github.dreamroute.mq.sdk.consumer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
 import com.github.dreamroute.mq.sdk.rocketmq.TxBody;
+import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
+import com.github.dreamroute.mq.sdk.service.TxMessageService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @SuppressWarnings("rawtypes")
 @RocketMQTransactionListener(txProducerGroup = "tx-group")
-public class SyncListener implements RocketMQLocalTransactionListener {
+public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
 
     @Autowired
     private TxMessageService txMessageService;
