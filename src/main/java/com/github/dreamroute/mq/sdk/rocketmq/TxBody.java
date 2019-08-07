@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 存入消息队列的body信息，必须使用或者继承此类，因为消息回查需要利用此对象的id信息
+ * 存入消息队列的body信息，需要把消息的主键id存入MQ，以便回查时根据id检查消息
  * 
  * @author w.dehai
  *

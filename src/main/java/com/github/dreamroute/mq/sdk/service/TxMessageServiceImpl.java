@@ -46,7 +46,7 @@ public class TxMessageServiceImpl implements TxMessageService {
     @Override
     @Transactional
     public int insert(TxMessage message) {
-        if (message.getCreateTime() != null)
+        if (message.getCreateTime() == null)
             message.setCreateTime(new Timestamp(new Date().getTime()));
         return txMessageMapper.insert(message);
     }
