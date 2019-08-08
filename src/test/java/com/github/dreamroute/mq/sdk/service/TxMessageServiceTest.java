@@ -57,7 +57,7 @@ public class TxMessageServiceTest {
         for (int i = 0; i < size; i++) {
             tasks.add(() -> {
 //                TxMessage message = new TxMessage(null, "fin-stable-dev", "tag" + (new Random().nextInt(3) + 1), String.valueOf(new Random().nextInt(3) + 1), null);
-                TxMessage message = new TxMessage(null, "fin-stable-dev-04", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
+                TxMessage message = new TxMessage(null, "fin-stable-dev-05", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
                 txMessageService.insert(message);
                 log.info("###新增消息表：{}, 插入数据条数: {}", JSON.toJSONString(message), count.incrementAndGet());
                 return null;
