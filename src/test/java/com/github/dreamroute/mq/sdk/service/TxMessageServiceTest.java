@@ -49,7 +49,7 @@ public class TxMessageServiceTest {
     @Test
     public void insertDBTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 1;
+        int size = 100000;
         long start = System.currentTimeMillis();
         ExecutorService pool = Executors.newFixedThreadPool(30);
 
@@ -71,7 +71,7 @@ public class TxMessageServiceTest {
 
     @Test
     public void syncTest() throws Exception {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 5000; i++)
             txMessageService.syncTxMessage2RocketMQ();
         Thread.sleep(Long.MAX_VALUE);
     }
