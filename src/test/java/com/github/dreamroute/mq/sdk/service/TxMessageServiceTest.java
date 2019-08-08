@@ -49,7 +49,7 @@ public class TxMessageServiceTest {
     @Test
     public void insertDBTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 100000;
+        int size = 10000;
         long start = System.currentTimeMillis();
         ExecutorService pool = Executors.newFixedThreadPool(30);
 

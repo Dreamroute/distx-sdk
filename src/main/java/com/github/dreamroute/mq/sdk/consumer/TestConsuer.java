@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RocketMQMessageListener(topic = "fin-stable-dev-03", selectorExpression = "tag", consumerGroup = "tag1")
+@RocketMQMessageListener(topic = "fin-stable-dev-02", selectorExpression = "tag", consumerGroup = "tag1")
 public class TestConsuer implements RocketMQListener<TxBody> {
 
     @Autowired
