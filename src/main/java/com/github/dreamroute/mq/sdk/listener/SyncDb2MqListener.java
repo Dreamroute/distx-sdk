@@ -1,4 +1,4 @@
-package com.github.dreamroute.mq.sdk.consumer;
+package com.github.dreamroute.mq.sdk.listener;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -55,7 +55,7 @@ public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
             }
         }
         log.info("同步: {}成功", JSON.toJSONString(msg.getPayload()));
-        return RocketMQLocalTransactionState.UNKNOWN;
+        return RocketMQLocalTransactionState.COMMIT;
     }
 
     @Override
