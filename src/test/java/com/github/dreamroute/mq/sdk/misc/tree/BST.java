@@ -26,7 +26,6 @@ public class BST<T extends Comparable<T>> implements Tree<T> {
         return this.height(this.root);
     }
     
-    偏向锁
     private int height(Node<T> parent) {
         if (parent == null)
             return 0;
