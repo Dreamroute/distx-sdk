@@ -71,7 +71,7 @@ public class TxMessageServiceTest {
 
     @Test
     public void syncTest() throws Exception {
-        for (int i = 1000; i < 1; i++)
+        for (int i = 1; i < 1000; i++)
             txMessageService.syncTxMessage2RocketMQ();
         Thread.sleep(Long.MAX_VALUE);
     }
