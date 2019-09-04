@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.dreamroute.mq.sdk.mapper.TxMessageMapper">
+
+    <!-- id范围查询 -->
+    <select id="selectByIdRange" parameterType="_long" resultType="com.github.dreamroute.mq.sdk.domain.TxMessage">
+	    SELECT
+		    * 
+		FROM
+		    tx_message
+		WHERE
+		    id &gt;= #{minId} 
+		    AND id &lt; #{maxId}
+    </select>
+</mapper>

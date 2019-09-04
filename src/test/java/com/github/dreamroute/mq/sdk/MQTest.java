@@ -2,6 +2,10 @@ package com.github.dreamroute.mq.sdk;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -35,6 +39,17 @@ public class MQTest {
         TransactionSendResult result = rocketMQTemplate.sendMessageInTransaction("tx-msg", "tx-msg", msg, null);
         System.err.println("事务消息第一次执行结果：" + JSON.toJSONString(result));
         Thread.sleep(Long.MAX_VALUE);
+    }
+    
+    @Test
+    public void thrTest() {
+        ExecutorService pool = Executors.newFixedThreadPool(10);
+        try {
+            pool.submit(() -> {}).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        FutureTask<String> ft;
     }
 
 }

@@ -20,8 +20,7 @@ import com.github.dreamroute.mq.sdk.service.TxMessageService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 监听器
- * 同步消息：DB -> MQ
+ * 监听器 同步消息：DB -> MQ
  * 
  * @author w.dehai
  */
@@ -35,7 +34,7 @@ public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
     private TxMessageService txMessageService;
     @Autowired
     private TxMessageDelService txMessageDelService;
-    
+
     @Value("${rocketmq.isTest:false}")
     private boolean isTest;
 
@@ -44,17 +43,18 @@ public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
         try {
             txMessageService.deleteById((Long) id);
         } catch (Exception e) {
-            log.error("删除消息失败：" + e, e);
+            log.error("删除消息失败，消息主键ID是：{}", id);
+            log.error("" + e, e);
             return RocketMQLocalTransactionState.ROLLBACK;
         }
-        // 如果是测试，那么这里强行测试一下回查功能
+        // 如果是isTest=true，那么这里强行测试回查功能
         if (isTest) {
             int result = new Random().nextInt(10) % 2;
             if (result == 0) {
                 return RocketMQLocalTransactionState.UNKNOWN;
             }
         }
-        log.info("同步: {}成功", JSON.toJSONString(msg.getPayload()));
+        log.info("DB -> MQ，消息内容：{}", JSON.toJSONString(msg.getPayload()));
         return RocketMQLocalTransactionState.COMMIT;
     }
 
@@ -63,10 +63,10 @@ public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
         byte[] payload = (byte[]) msg.getPayload();
         String payloadStr = new String(payload, StandardCharsets.UTF_8);
         TxBody body = JSON.parseObject(payloadStr, TxBody.class);
-        log.info("消息回查，msg：{}", JSON.toJSONString(body));
+        log.info("消息回查，消息内容：{}", JSON.toJSONString(body));
         TxMessageDel delMsg = txMessageDelService.selectById(body.getId());
-        log.info("消息回查，DelMsg: {}", JSON.toJSONString(delMsg));
         if (delMsg != null) {
+         // 如果是isTest=true，那么这里强行测试回查功能
             if (isTest) {
                 int result = new Random().nextInt(10) % 2;
                 if (result == 0) {

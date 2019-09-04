@@ -13,11 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alibaba.fastjson.JSON;
 import com.github.dreamroute.mq.sdk.domain.TxMessage;
+import com.github.dreamroute.mq.sdk.mapper.TxMessageMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +30,11 @@ public class TxMessageServiceTest {
 
     @Autowired
     private TxMessageService txMessageService;
+    @Autowired
+    private TxMessageMapper txMessageMapper;
+    
+    @Value("${rocketmq.pageSize:10}")
+    private int pageSize;
 
     @Test
     public void insertTest() {
@@ -42,22 +49,28 @@ public class TxMessageServiceTest {
 
     @Test
     public void selectTxMessageByPageTest() {
-        List<TxMessage> data = txMessageService.selectTxMessageByPage(5);
+        List<TxMessage> data = txMessageService.selectTxMessageByPage(5, 3);
         System.err.println(data);
+    }
+    
+    @Test
+    public void selectByIdRangeTest() {
+        List<TxMessage> result = txMessageMapper.selectByIdRange(56611L, 56615L);
+        System.err.println(result);
     }
 
     @Test
     public void insertDBTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 1000;
+        int size = 10000;
         long start = System.currentTimeMillis();
-        ExecutorService pool = Executors.newFixedThreadPool(30);
+        ExecutorService pool = Executors.newFixedThreadPool(16);
 
         List<Callable<String>> tasks = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             tasks.add(() -> {
 //                TxMessage message = new TxMessage(null, "fin-stable-dev", "tag" + (new Random().nextInt(3) + 1), String.valueOf(new Random().nextInt(3) + 1), null);
-                TxMessage message = new TxMessage(null, "fin-stable-dev-06", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
+                TxMessage message = new TxMessage(null, "fin-stable-dev-21", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
                 txMessageService.insert(message);
                 log.info("###新增消息表：{}, 插入数据条数: {}", JSON.toJSONString(message), count.incrementAndGet());
                 return null;
@@ -71,8 +84,41 @@ public class TxMessageServiceTest {
 
     @Test
     public void syncTest() throws Exception {
-        for (int i = 1; i < 1000; i++)
-            txMessageService.syncTxMessage2RocketMQ();
+        List<TxMessage> result = txMessageService.selectTxMessageByPage(1, 1);
+        Long firstRowId = null;
+        if (result != null && !result.isEmpty()) {
+            firstRowId = result.get(0).getId();
+        }
+        
+        if (firstRowId != null) {
+            int count = txMessageMapper.selectCount(null);
+            int totalPage = count / pageSize;
+            if (count % this.pageSize != 0)
+                totalPage++;
+            
+            long first = firstRowId.longValue();
+            AtomicInteger page = new AtomicInteger(-1);
+            
+            long start = System.currentTimeMillis();
+            ExecutorService pool = Executors.newFixedThreadPool(16);
+            List<Callable<String>> tasks = new ArrayList<>();
+            for (int i=0; i<totalPage; i++) {
+                tasks.add(() -> {
+                    int pg = page.incrementAndGet();
+                    txMessageService.syncTxMessage2RocketMQ(first + pg * pageSize, first + (pg + 1) * pageSize);
+                    return null;
+                });
+            }
+            pool.invokeAll(tasks);
+            long end = System.currentTimeMillis();
+            long consum = end - start;
+            System.err.println("耗时" + consum);
+            Thread.sleep(Long.MAX_VALUE);
+        }
+    }
+    
+    @Test
+    public void startContainerTest() throws Exception {
         Thread.sleep(Long.MAX_VALUE);
     }
 

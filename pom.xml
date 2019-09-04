@@ -1,9 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>distx-sdk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
@@ -14,36 +16,17 @@
 		<fastjson.version>1.2.56</fastjson.version>
 		<sqlprinter.version>1.5-RELEASE</sqlprinter.version>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<curator-framework.version>4.2.0</curator-framework.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot-starter-web.version>2.1.3.RELEASE</spring-boot-starter-web.version>
 		<mapper-spring-boot-starter.version>2.1.5</mapper-spring-boot-starter.version>
+		<spring-boot-starter-web.version>2.1.3.RELEASE</spring-boot-starter-web.version>
 		<rocketmq-spring-boot-starter.version>2.0.3</rocketmq-spring-boot-starter.version>
 		<pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
 	</properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
 
+		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -51,18 +34,31 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- curator -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>${curator-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>${curator-framework.version}</version>
+		</dependency>
+
+		<!-- MyBatis -->
 		<dependency>
 			<groupId>tk.mybatis</groupId>
 			<artifactId>mapper-spring-boot-starter</artifactId>
 			<version>${mapper-spring-boot-starter.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>${pagehelper-spring-boot-starter.version}</version>
 		</dependency>
 
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -74,30 +70,33 @@
 			<version>${spring-boot-starter-web.version}</version>
 		</dependency>
 
+		<!-- RocketMQ -->
 		<dependency>
 			<groupId>org.apache.rocketmq</groupId>
 			<artifactId>rocketmq-spring-boot-starter</artifactId>
 			<version>${rocketmq-spring-boot-starter.version}</version>
 		</dependency>
 
+		<!-- MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.15</version>
 		</dependency>
 
+		<!-- SqlPrinter -->
 		<dependency>
 			<groupId>com.github.dreamroute</groupId>
 			<artifactId>sqlprinter</artifactId>
 			<version>${sqlprinter.version}</version>
 		</dependency>
 
+		<!-- other util -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -120,5 +119,26 @@
 			<version>${dozer.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

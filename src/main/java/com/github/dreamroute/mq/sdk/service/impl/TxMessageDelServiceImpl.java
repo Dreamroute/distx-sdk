@@ -1,4 +1,4 @@
-package com.github.dreamroute.mq.sdk.service;
+package com.github.dreamroute.mq.sdk.service.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
 import com.github.dreamroute.mq.sdk.mapper.TxMessageDelMapper;
+import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
 
 /**
  * 
