@@ -45,6 +45,8 @@ public class TxMessageServiceImpl implements TxMessageService {
     private int pageSize;
     @Value("${rocketmq.isTest:false}")
     private boolean isTest;
+    @Value("${rocketmq.txGroup}")
+    private String txGroup;
 
     @Override
     @Transactional
@@ -103,7 +105,7 @@ public class TxMessageServiceImpl implements TxMessageService {
                 TransactionSendResult result = null;
                 Message<TxBody> msg = MessageBuilder.withPayload(txBody).build();
                 try {
-                    result = rocketMQTemplate.sendMessageInTransaction("tx-group", txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());
+                    result = rocketMQTemplate.sendMessageInTransaction(txGroup, txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());
                 } catch (Exception e) {
                     log.error(e.getMessage() + e, e);
                     throw new RuntimeException("同步DB -> MQ失败！");

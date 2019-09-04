@@ -62,17 +62,16 @@ public class TxMessageServiceTest {
     @Test
     public void insertDBTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 10000;
+        int size = 10;
         long start = System.currentTimeMillis();
         ExecutorService pool = Executors.newFixedThreadPool(16);
 
         List<Callable<String>> tasks = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             tasks.add(() -> {
-//                TxMessage message = new TxMessage(null, "fin-stable-dev", "tag" + (new Random().nextInt(3) + 1), String.valueOf(new Random().nextInt(3) + 1), null);
-                TxMessage message = new TxMessage(null, "fin-stable-dev-21", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
+                TxMessage message = new TxMessage(null, "fin-stable-dev-22", "tag", String.valueOf(new Random().nextInt(3) + 1), null);
                 txMessageService.insert(message);
-                log.info("###新增消息表：{}, 插入数据条数: {}", JSON.toJSONString(message), count.incrementAndGet());
+                log.info("===> ###新增消息表：{}, 插入数据条数: {}", JSON.toJSONString(message), count.incrementAndGet());
                 return null;
             });
         }

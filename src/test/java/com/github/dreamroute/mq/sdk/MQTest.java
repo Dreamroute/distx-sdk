@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -49,7 +48,7 @@ public class MQTest {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        FutureTask<String> ft;
+//        FutureTask<String> ft;
     }
 
 }

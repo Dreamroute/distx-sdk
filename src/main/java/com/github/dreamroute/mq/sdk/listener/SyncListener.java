@@ -3,13 +3,11 @@ package com.github.dreamroute.mq.sdk.listener;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-import org.apache.rocketmq.spring.annotation.RocketMQTransactionListener;
 import org.apache.rocketmq.spring.core.RocketMQLocalTransactionListener;
 import org.apache.rocketmq.spring.core.RocketMQLocalTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
-import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
@@ -20,15 +18,15 @@ import com.github.dreamroute.mq.sdk.service.TxMessageService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 监听器 同步消息：DB -> MQ
+ * 监听器，同步消息：DB -> MQ，事务消息执行和回查依赖此类，每个应用（微服务）消息生产者需要继承此类，并且添加
+ * <code>@Service</code>和<code>@RocketMQTransactionListener</code>注解，其中<code>@RocketMQTransactionListener</code>
+ * 的txProducerGroup属性必须是必填的，而且必须是MQ上的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID），此类的继承者一个应用只需要一个
  * 
  * @author w.dehai
  */
 @Slf4j
-@Service
 @SuppressWarnings("rawtypes")
-@RocketMQTransactionListener(txProducerGroup = "tx-group")
-public class SyncDb2MqListener implements RocketMQLocalTransactionListener {
+public class SyncListener implements RocketMQLocalTransactionListener {
 
     @Autowired
     private TxMessageService txMessageService;

@@ -24,46 +24,37 @@ public class MQProperties {
     private String accessKey;
     private String secretKey;
 
-    // 
-    private String groupId;
-    private String namesrvAddr;
+    // 本SDK配置信息
+    private String txGroup;
+    private Boolean isTest;
+    private Integer pageSize;
 
+    // Topic，全局唯一，每个应用使用一个topic，应用下的不同业务使用Tag区分
     private String topic;
 
-    private Boolean roleProducer;
-    private Boolean roleConsumer;
-    private boolean producer; // 是否注入普通消息生产者
-
-    private String sendMsgTimeoutMillis = "3000";
-    private String consumeThreadNums;
+    // Template配置
+    private String nameServer;
 
     @PostConstruct
     public void checkProperties() {
 
-//        log.info("");
-//        log.info("################RocketMQ配置信息################");
-//        log.info("#   accessKey: {}", accessKey);
-//        log.info("#   secretKey: {}", secretKey);
-//        log.info("#   groupId: {}, **一定注意：一个消费者一个groupId，groupId冲突会引发严重问题**", groupId);
-//        log.info("#   namesrvAddr: {}", namesrvAddr);
-//        log.info("#   topic: {}", topic);
-//        log.info("#   roleProducer: {}", roleProducer);
-//        log.info("#   roleConsumer: {}", roleConsumer);
-//        log.info("################RocketMQ配置信息################");
-//        log.info("");
-//
-//        // 检查配置文件信息
-//        if (StringUtils.isBlank(groupId))
-//            throw new BasicException("RocketMQ配置信息不全，groupId不能为空");
-//        if (StringUtils.isBlank(namesrvAddr))
-//            throw new BasicException("RocketMQ配置信息不全，namesrvAddr不能为空");
-//        if (StringUtils.isNotBlank(topic))
-//            throw new BasicException("RocketMQ配置信息有误，不能有topic");
-//        if (roleProducer == null)
-//            throw new BasicException("RocketMQ配置信息不全，roleProducer不能为空");
-//        if (roleConsumer == null)
-//            throw new BasicException("RocketMQ配置信息不全，roleConsumer不能为空");
-        
+        log.info("");
+        log.info("################RocketMQ配置信息################");
+        log.info("#   accessKey: [{}]", accessKey);
+        log.info("#   secretKey: [{}]", secretKey);
+        log.info("#   txGroup: [{}]", txGroup);
+        log.info("#   isTest: [{}]", isTest);
+        log.info("#   pageSize: [{}]", pageSize);
+        log.info("#   topic: [{}]", topic);
+        log.info("#   nameServer: [{}]", nameServer);
+        log.info("################RocketMQ配置信息################");
+        log.info("");
+
+        // 检查配置文件信息
+        if (StringUtils.isBlank(txGroup))
+            throw new RuntimeException("必填，MQ级别的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID）");
+        if (StringUtils.isNotBlank(topic))
+            throw new RuntimeException("必填，MQ级别的全局唯一");
     }
 
 }
