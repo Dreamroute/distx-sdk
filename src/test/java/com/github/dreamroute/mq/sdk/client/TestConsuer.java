@@ -1,4 +1,4 @@
-package com.github.dreamroute.mq.sdk.consumer;
+package com.github.dreamroute.mq.sdk.client;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

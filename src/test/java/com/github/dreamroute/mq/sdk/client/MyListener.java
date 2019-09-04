@@ -1,4 +1,4 @@
-package com.github.dreamroute.mq.sdk.consumer;
+package com.github.dreamroute.mq.sdk.client;
 
 import org.apache.rocketmq.spring.annotation.RocketMQTransactionListener;
 import org.springframework.stereotype.Service;
