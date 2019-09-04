@@ -5,8 +5,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.github.dreamroute.mq.sdk.domain.TxMessageCommit;
@@ -16,8 +18,8 @@ import com.github.dreamroute.mq.sdk.service.TxMessageCommitService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@Service
-//@RocketMQMessageListener(topic = "fin-stable-dev-15", selectorExpression = "tag", consumerGroup = "tag1")
+@Service
+@RocketMQMessageListener(topic = "fin-stable-dev-24", selectorExpression = "tag1", consumerGroup = "tag1")
 public class TestConsuer implements RocketMQListener<TxBody> {
 
     @Autowired

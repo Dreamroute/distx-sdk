@@ -20,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 监听器，同步消息：DB -> MQ，事务消息执行和回查依赖此类，每个应用（微服务）消息生产者需要继承此类，并且添加
  * <code>@Service</code>和<code>@RocketMQTransactionListener</code>注解，其中<code>@RocketMQTransactionListener</code>
- * 的txProducerGroup属性必须是必填的，而且必须是MQ上的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID），此类的继承者一个应用只需要一个
+ * 的txProducerGroup属性必须是必填的，而且必须是MQ上的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID），此类的继承者一个应用只需要一个，
+ * txProducerGroup的值必须与你应用的配置文件中的rocketmq.txGroup相同
  * 
  * @author w.dehai
  */
