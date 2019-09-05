@@ -40,7 +40,7 @@ public class TestConsuer2 implements RocketMQListener<TxBody> {
             log.info("消费消息: 第{}条，MSG: {}", consumeCount.incrementAndGet(), body);
             Map<Long, AtomicInteger> map = count.entrySet().stream().filter(e -> e.getValue().get() > 1).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             System.err.println("重复条数：" + map.size());
-            System.err.println("总条数tag1：" + count.size());
+            System.err.println("总条数tag2：" + count.size());
             System.err.println(map);
 
             // 消费过的记录入库，在面对极端情况时候可以手动对账、补偿

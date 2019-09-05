@@ -28,6 +28,8 @@ public class TxMessageCommit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String topic;
+    private String tag;
     private String body;
     private Timestamp createTime;
     private Long messageTableId;
