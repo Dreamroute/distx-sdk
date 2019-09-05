@@ -48,6 +48,8 @@ public class TestConsuer2 implements RocketMQListener<TxBody> {
             msg.setMessageTableId(body.getId());
             msg.setBody(body.getBody());
             txMessageCommitService.insert(msg);
+            
+            System.err.println("tag2消费" + body.getBody());
 
         } catch (Exception e) {
             throw new RuntimeException("业务异常" + e, e);
