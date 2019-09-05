@@ -18,7 +18,7 @@ import com.github.dreamroute.mq.sdk.service.TxMessageCommitService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+//@Service
 @RocketMQMessageListener(topic = "fin-stable-dev-25", selectorExpression = "tag1", consumerGroup = "wangdehai")
 public class TestConsuer1 implements RocketMQListener<TxBody> {
 
