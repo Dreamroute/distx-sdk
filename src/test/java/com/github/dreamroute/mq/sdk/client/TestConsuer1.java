@@ -27,6 +27,7 @@ public class TestConsuer1 implements RocketMQListener<TxBody> {
 
     private AtomicInteger consumeCount = new AtomicInteger(0);
     private ConcurrentHashMap<Long, AtomicInteger> count = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, AtomicInteger> countConsume = new ConcurrentHashMap<>();
 
     @Override
     public void onMessage(TxBody body) {
@@ -36,6 +37,7 @@ public class TestConsuer1 implements RocketMQListener<TxBody> {
             log.info("TxBody: {}", JSON.toJSONString(body));
 
             count.computeIfAbsent(body.getId(), t -> new AtomicInteger(1));
+            countConsume.computeIfAbsent("tag1消费1", t -> new AtomicInteger(1));
 
             log.info("消费消息: 第{}条，MSG: {}", consumeCount.incrementAndGet(), body);
             Map<Long, AtomicInteger> map = count.entrySet().stream().filter(e -> e.getValue().get() > 1).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -49,7 +51,8 @@ public class TestConsuer1 implements RocketMQListener<TxBody> {
             msg.setBody(body.getBody());
             txMessageCommitService.insert(msg);
             
-            System.err.println("tag1消费" + body.getBody());
+            
+            System.err.println("tag1消费1: " + countConsume.get("tag1消费1").intValue());
 
         } catch (Exception e) {
             throw new RuntimeException("业务异常" + e, e);
