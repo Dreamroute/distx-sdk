@@ -6,6 +6,37 @@
 	<artifactId>distx-sdk</artifactId>
 	<version>1.0-RELEASE</version>
 
+	<name>distx-sdk</name>
+	<url>https://github.com/Dreamroute/distx-sdk.git</url>
+	<description>https://github.com/Dreamroute/distx-sdk.git</description>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>wangdehai</name>
+			<email>342252328@qq.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:Dreamroute/distx-sdk.git</connection>
+		<developerConnection>scm:git:git@github.com:Dreamroute/distx-sdk.git</developerConnection>
+		<url>https://github.com/Dreamroute/distx-sdk</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>maven-3rd</id>
+			<url>http://10.82.12.29:8081/repository/maven-3rd/</url>
+		</repository>
+	</distributionManagement>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
@@ -125,6 +156,35 @@
 				<configuration>
 					<skipTests>true</skipTests>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
