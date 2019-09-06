@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.github.dreamroute.mq.sdk.domain.TxMessage;
 import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
+import com.github.dreamroute.mq.sdk.exception.SdkException;
 import com.github.dreamroute.mq.sdk.mapper.TxMessageMapper;
 import com.github.dreamroute.mq.sdk.rocketmq.TxBody;
 import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
@@ -105,7 +106,7 @@ public class TxMessageServiceImpl implements TxMessageService {
                     result = rocketMqTemplate.sendMessageInTransaction(txGroup, txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());
                 } catch (Exception e) {
                     log.error(e.getMessage() + e, e);
-                    throw new RuntimeException("同步DB -> MQ失败！");
+                    throw new SdkException("同步DB -> MQ失败！");
                 }
                 log.info("同步DB -> MQ结果: {}", JSON.toJSONString(result));
             }
