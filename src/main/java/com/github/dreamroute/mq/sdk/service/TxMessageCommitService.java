@@ -8,7 +8,12 @@ import com.github.dreamroute.mq.sdk.domain.TxMessageCommit;
  *
  */
 public interface TxMessageCommitService {
-    
+
+    /**
+     * 新增消息
+     * 
+     * @param msg
+     */
     void insert(TxMessageCommit msg);
-    
+
 }

@@ -18,21 +18,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration
 @ConfigurationProperties(prefix = "rocketmq")
-public class MQProperties {
+public class MqProperties {
 
-    // 阿里云ons AK和SK，自建MQ忽略这2个配置
+    /**阿里云ons AK和SK，自建MQ忽略这2个配置*/
     private String accessKey;
     private String secretKey;
 
-    // 本SDK配置信息
+    /**本SDK配置信息*/
     private String txGroup;
     private Boolean isTest;
     private Integer pageSize;
 
-    // Topic，全局唯一，每个应用使用一个topic，应用下的不同业务使用Tag区分
+    /**Topic，全局唯一，每个应用使用一个topic，应用下的不同业务使用Tag区分*/
     private String topic;
 
-    // Template配置
+    /**Template配置*/
     private String nameServer;
 
     @PostConstruct
@@ -51,10 +51,12 @@ public class MQProperties {
         log.info("");
 
         // 检查配置文件信息
-        if (StringUtils.isBlank(txGroup))
-            throw new RuntimeException("必填，MQ级别的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID）");
-        if (StringUtils.isNotBlank(topic))
-            throw new RuntimeException("必填，MQ级别的全局唯一");
+        if (StringUtils.isBlank(txGroup)) {
+            throw new IllegalArgumentException("必填，MQ级别的全局唯一（推荐：1.项目名+服务名+端口号， 2.UUID）");
+        }
+        if (StringUtils.isNotBlank(topic)) {
+            throw new IllegalArgumentException("必填，MQ级别的全局唯一");
+        }
     }
 
 }

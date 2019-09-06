@@ -15,6 +15,13 @@ import tk.mybatis.mapper.common.Mapper;
  */
 public interface TxMessageMapper extends Mapper<TxMessage> {
 
-    List<TxMessage> selectByIdRange(@Param("minId") long minId, @Param("maxId")  long maxId);
-    
+    /**
+     * 批量查询
+     * 
+     * @param minId 最小id
+     * @param maxId 最大id
+     * @return 返回消息列表
+     */
+    List<TxMessage> selectByIdRange(@Param("minId") long minId, @Param("maxId") long maxId);
+
 }

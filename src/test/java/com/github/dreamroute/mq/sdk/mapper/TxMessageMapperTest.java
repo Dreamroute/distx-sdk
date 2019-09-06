@@ -1,7 +1,6 @@
 package com.github.dreamroute.mq.sdk.mapper;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.github.dreamroute.mq.sdk.domain.TxMessage;
 
+/**
+ * @author w.dehai
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TxMessageMapperTest {
@@ -20,7 +22,7 @@ public class TxMessageMapperTest {
 
     @Test
     public void insertTest() {
-        TxMessage msg = TxMessage.builder().topic("tx-msg").tag("tx-msg").createTime(new Timestamp(new Date().getTime())).body("tx-msg").build();
+        TxMessage msg = TxMessage.builder().topic("tx-msg").tag("tx-msg").createTime(new Timestamp(System.currentTimeMillis())).body("tx-msg").build();
         txMessageMapper.insert(msg);
     }
 

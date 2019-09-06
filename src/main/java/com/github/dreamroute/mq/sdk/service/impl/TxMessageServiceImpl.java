@@ -1,7 +1,6 @@
 package com.github.dreamroute.mq.sdk.service.impl;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.rocketmq.client.producer.TransactionSendResult;
@@ -32,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TxMessageServiceImpl implements TxMessageService {
 
     @Autowired
@@ -39,7 +39,7 @@ public class TxMessageServiceImpl implements TxMessageService {
     @Autowired
     private TxMessageDelService txMessageDelService;
     @Autowired
-    private RocketMQTemplate rocketMQTemplate;
+    private RocketMQTemplate rocketMqTemplate;
 
     @Value("${rocketmq.pageSize:1}")
     private int pageSize;
@@ -49,19 +49,18 @@ public class TxMessageServiceImpl implements TxMessageService {
     private String txGroup;
 
     @Override
-    @Transactional
     public int insert(TxMessage message) {
-        if (message.getCreateTime() == null)
-            message.setCreateTime(new Timestamp(new Date().getTime()));
+        if (message.getCreateTime() == null) {
+            message.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        }
         return txMessageMapper.insert(message);
     }
 
     @Override
-    @Transactional
     public int deleteById(Long id) {
         TxMessage msg = txMessageMapper.selectByPrimaryKey(id);
         TxMessageDel del = BeanMapper.map(msg, TxMessageDel.class);
-        del.setCreateTime(new Timestamp(new Date().getTime()));
+        del.setCreateTime(new Timestamp(System.currentTimeMillis()));
         txMessageDelService.insert(del);
         txMessageMapper.deleteByPrimaryKey(id);
         return 1;
@@ -75,21 +74,19 @@ public class TxMessageServiceImpl implements TxMessageService {
     }
 
     @Override
-    @Transactional
-    public void syncTxMessage2RocketMQ() {
+    public void syncTxMessage2RocketMq() {
         // pageNo设置为1
-        this.syncTxMessage2RocketMQ(1);
+        this.syncTxMessage2RocketMq(1);
     }
 
     @Override
-    @Transactional
-    public void syncTxMessage2RocketMQ(int pageNo) {
+    public void syncTxMessage2RocketMq(int pageNo) {
         List<TxMessage> txMsgList = this.selectTxMessageByPage(pageSize, pageNo);
         processMsgList(txMsgList);
     }
 
     @Override
-    public void syncTxMessage2RocketMQ(long minId, long maxId) {
+    public void syncTxMessage2RocketMq(long minId, long maxId) {
         List<TxMessage> txMsgList = txMessageMapper.selectByIdRange(minId, maxId);
         processMsgList(txMsgList);
     }
@@ -105,7 +102,7 @@ public class TxMessageServiceImpl implements TxMessageService {
                 TransactionSendResult result = null;
                 Message<TxBody> msg = MessageBuilder.withPayload(txBody).build();
                 try {
-                    result = rocketMQTemplate.sendMessageInTransaction(txGroup, txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());
+                    result = rocketMqTemplate.sendMessageInTransaction(txGroup, txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());
                 } catch (Exception e) {
                     log.error(e.getMessage() + e, e);
                     throw new RuntimeException("同步DB -> MQ失败！");

@@ -2,12 +2,13 @@ package com.github.dreamroute.mq.sdk.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
@@ -23,6 +24,11 @@ import com.github.dreamroute.mq.sdk.mapper.TxMessageMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * CRUD测试类
+ * 
+ * @author w.dehai
+ */
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -38,7 +44,7 @@ public class TxMessageServiceTest {
 
     @Test
     public void insertTest() {
-        TxMessage message = TxMessage.builder().topic("tx-msg").tag("tx-msg").createTime(new Timestamp(new Date().getTime())).body("tx-msg").build();
+        TxMessage message = TxMessage.builder().topic("tx-msg").tag("tx-msg").createTime(new Timestamp(System.currentTimeMillis())).body("tx-msg").build();
         txMessageService.insert(message);
     }
 
@@ -60,11 +66,11 @@ public class TxMessageServiceTest {
     }
 
     @Test
-    public void insertDBTest() throws InterruptedException {
+    public void insertDbTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
         int size = 20000;
         long start = System.currentTimeMillis();
-        ExecutorService pool = Executors.newFixedThreadPool(16);
+        ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
 
         List<Callable<String>> tasks = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -93,19 +99,20 @@ public class TxMessageServiceTest {
         if (firstRowId != null) {
             int count = txMessageMapper.selectCount(null);
             int totalPage = count / pageSize;
-            if (count % this.pageSize != 0)
+            if (count % this.pageSize != 0) {
                 totalPage++;
+            }
             
             long first = firstRowId.longValue();
             AtomicInteger page = new AtomicInteger(-1);
             
             long start = System.currentTimeMillis();
-            ExecutorService pool = Executors.newFixedThreadPool(16);
+            ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
             List<Callable<String>> tasks = new ArrayList<>();
             for (int i=0; i<totalPage; i++) {
                 tasks.add(() -> {
                     int pg = page.incrementAndGet();
-                    txMessageService.syncTxMessage2RocketMQ(first + pg * pageSize, first + (pg + 1) * pageSize);
+                    txMessageService.syncTxMessage2RocketMq(first + pg * pageSize, first + (pg + 1) * pageSize);
                     return null;
                 });
             }

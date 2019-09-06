@@ -28,8 +28,9 @@ public class TestListener extends SyncListener {
     public void checkTxGroup() {
         RocketMQTransactionListener listener = this.getClass().getAnnotation(RocketMQTransactionListener.class);
         String group = listener.txProducerGroup();
-        if (StringUtils.isBlank(group) || !Objects.equals(group, txGroup))
+        if (StringUtils.isBlank(group) || !Objects.equals(group, txGroup)) {
             throw new IllegalArgumentException("事务消息生产者组配置异常，配置文件中的rocketmq.txGroup值与SyncListener实现类的注解@RocketMQTransactionListener的属性txProducerGroup不相同，这会导致严重的后果");
+        }
     }
     
 }

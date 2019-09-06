@@ -17,6 +17,9 @@ import com.github.dreamroute.mq.sdk.service.TxMessageCommitService;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author w.dehai
+ */
 @Slf4j
 @Service
 @RocketMQMessageListener(topic = "fin-stable-dev-26", selectorExpression = "tag1", consumerGroup = "wangdehai1")

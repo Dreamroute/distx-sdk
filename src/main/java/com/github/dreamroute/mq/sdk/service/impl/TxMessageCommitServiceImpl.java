@@ -1,7 +1,6 @@
 package com.github.dreamroute.mq.sdk.service.impl;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +16,15 @@ import com.github.dreamroute.mq.sdk.service.TxMessageCommitService;
  *
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TxMessageCommitServiceImpl implements TxMessageCommitService {
     
     @Autowired
     private TxMessageCommitMapper txMessageCommitMapper;
 
     @Override
-    @Transactional
     public void insert(TxMessageCommit msg) {
-        msg.setCreateTime(new Timestamp(new Date().getTime()));
+        msg.setCreateTime(new Timestamp(System.currentTimeMillis()));
         txMessageCommitMapper.insert(msg);
     }
     
