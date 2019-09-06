@@ -34,18 +34,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- curator -->
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-framework</artifactId>
-			<version>${curator-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-recipes</artifactId>
-			<version>${curator-framework.version}</version>
-		</dependency>
-
 		<!-- MyBatis -->
 		<dependency>
 			<groupId>tk.mybatis</groupId>
@@ -92,11 +80,6 @@
 		</dependency>
 
 		<!-- other util -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
