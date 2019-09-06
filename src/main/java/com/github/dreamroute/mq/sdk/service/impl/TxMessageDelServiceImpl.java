@@ -18,16 +18,16 @@ import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class TxMessageDelServiceImpl implements TxMessageDelService {
-    
+
     @Autowired
     private TxMessageDelMapper txMessageDelMapper;
-    
+
     @Override
     public int insert(TxMessageDel txMessageDel) {
         txMessageDel.setCreateTime(new Timestamp(System.currentTimeMillis()));
         return txMessageDelMapper.insert(txMessageDel);
     }
-    
+
     @Override
     public TxMessageDel selectById(Long id) {
         return txMessageDelMapper.selectByPrimaryKey(id);

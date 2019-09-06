@@ -24,12 +24,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "tx_message_commit")
 public class TxMessageCommit {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String body;
     private Timestamp createTime;
     private Long messageTableId;
-    
+
 }

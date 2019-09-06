@@ -18,7 +18,7 @@ import com.github.dreamroute.mq.sdk.service.TxMessageCommitService;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class TxMessageCommitServiceImpl implements TxMessageCommitService {
-    
+
     @Autowired
     private TxMessageCommitMapper txMessageCommitMapper;
 
@@ -27,6 +27,5 @@ public class TxMessageCommitServiceImpl implements TxMessageCommitService {
         msg.setCreateTime(new Timestamp(System.currentTimeMillis()));
         txMessageCommitMapper.insert(msg);
     }
-    
 
 }

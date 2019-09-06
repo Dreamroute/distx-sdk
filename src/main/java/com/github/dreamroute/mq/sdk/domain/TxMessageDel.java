@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "tx_message_del")
 public class TxMessageDel {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,5 +32,5 @@ public class TxMessageDel {
     private String tag;
     private String body;
     private Timestamp createTime;
-    
+
 }
