@@ -35,15 +35,25 @@ public class SyncListener implements RocketMQLocalTransactionListener {
     @Value("${rocketmq.isTest:false}")
     private boolean isTest;
 
+    /**
+     * 执行本地事务，也就是逻辑删除消息记录，本方法已经用final修饰，不允许子类重写
+     */
     @Override
-    public RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object id) {
+    public final RocketMQLocalTransactionState executeLocalTransaction(Message msg, Object id) {
         try {
             txMessageService.deleteById((Long) id);
+            // 说明：本地deleteById执行成功，消息就应该被删除，但是实测消息不会被删除，而是要本方法执行完毕才会删除掉数据
+            // 所以说对于执行完成deleteById方法立马断电断网的情况，消息就还存在，等待下一次同步
+            // half消息提交之后，而对于网络异常（特别慢），一直为执行rollback或者commit，那么也会进行回查，回查之后由于del表并无数据，所以会进行rollback
+            // 但是无论此时进行多少次rollback，本方法执行完毕，消息都会提交到mq，这种情况是不存在的[half提交 -> 回查rollback -> 二次提交 -> mq中无消息]
+            // 所以结果就是本方法如果无异常，没执行完毕本方法，消息就不会被删除，下次依然可以同步（只是可能重复提交），本方法执行完毕，一定会把消息提交到mq
+            // 结果：消息被删除就意味着消息一定是进入了mq的
         } catch (Exception e) {
             log.error("删除消息失败，消息主键ID是：{}", id);
             log.error("" + e, e);
             return RocketMQLocalTransactionState.ROLLBACK;
         }
+        
         // 如果是isTest=true，那么这里强行测试回查功能
         if (isTest) {
             int result = new Random().nextInt(10) % 2;
@@ -55,8 +65,11 @@ public class SyncListener implements RocketMQLocalTransactionListener {
         return RocketMQLocalTransactionState.COMMIT;
     }
 
+    /**
+     * 事务消息回查接口，本方法已经用final修饰，不允许子类重写
+     */
     @Override
-    public RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
+    public final RocketMQLocalTransactionState checkLocalTransaction(Message msg) {
         byte[] payload = (byte[]) msg.getPayload();
         String payloadStr = new String(payload, StandardCharsets.UTF_8);
         TxBody body = JSON.parseObject(payloadStr, TxBody.class);

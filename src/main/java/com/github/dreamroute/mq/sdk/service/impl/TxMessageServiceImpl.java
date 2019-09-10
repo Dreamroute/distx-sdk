@@ -100,7 +100,7 @@ public class TxMessageServiceImpl implements TxMessageService {
                 txBody.setId(txMessage.getId());
                 txBody.setBody(txMessage.getBody());
 
-                TransactionSendResult result = null;
+                TransactionSendResult result;
                 Message<TxBody> msg = MessageBuilder.withPayload(txBody).build();
                 try {
                     result = rocketMqTemplate.sendMessageInTransaction(txGroup, txMessage.getTopic() + ":" + txMessage.getTag(), msg, txMessage.getId());

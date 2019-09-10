@@ -68,7 +68,7 @@ public class TxMessageServiceTest {
     @Test
     public void insertDbTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 100;
+        int size = 1;
         long start = System.currentTimeMillis();
         ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
 
@@ -76,7 +76,7 @@ public class TxMessageServiceTest {
         for (int i = 0; i < size; i++) {
             tasks.add(() -> {
                 int value = new Random().nextInt(3) + 1;
-                TxMessage message = new TxMessage(null, "fin-stable-dev-26", "tag" + value, String.valueOf(value), null);
+                TxMessage message = new TxMessage(null, "fin-stable-dev-30", "tag" + value, "CC", null);
                 txMessageService.insert(message);
                 log.info("===> ###新增消息表：{}, 插入数据条数: {}", JSON.toJSONString(message), count.incrementAndGet());
                 return null;
@@ -87,9 +87,20 @@ public class TxMessageServiceTest {
         long consum = end - start;
         System.err.println("插入" + size + "条数据耗时" + consum);
     }
-
+    
+    /**
+     * 正常同步（用于生产环境）
+     */
     @Test
     public void syncTest() throws Exception {
+        txMessageService.syncTxMessage2RocketMq();
+    }
+
+    /**
+     * 多线程同步（用于测试环境）
+     */
+    @Test
+    public void syncTestWithThreadpool() throws Exception {
         List<TxMessage> result = txMessageService.selectTxMessageByPage(1, 1);
         Long firstRowId = null;
         if (result != null && !result.isEmpty()) {
