@@ -68,7 +68,7 @@ public class TxMessageServiceTest {
     @Test
     public void insertDbTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
-        int size = 20000;
+        int size = 100;
         long start = System.currentTimeMillis();
         ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
 
