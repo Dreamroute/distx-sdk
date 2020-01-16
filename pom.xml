@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>distx-sdk</artifactId>
-	<version>1.1-RELEASE</version>
+	<version>1.2-RELEASE</version>
 
 	<name>distx-sdk</name>
 	<url>https://github.com/Dreamroute/distx-sdk.git</url>
