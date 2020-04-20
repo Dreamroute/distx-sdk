@@ -62,6 +62,8 @@ public class TxMessageServiceImpl implements TxMessageService {
         TxMessage msg = txMessageMapper.selectByPrimaryKey(id);
         TxMessageDel del = BeanMapper.map(msg, TxMessageDel.class);
         del.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        // fix issue#1, 让del表自增
+        del.setId(null);
         txMessageDelService.insert(del);
         txMessageMapper.deleteByPrimaryKey(id);
         return 1;
