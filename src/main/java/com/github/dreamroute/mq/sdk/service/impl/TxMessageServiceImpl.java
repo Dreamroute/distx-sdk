@@ -95,7 +95,9 @@ public class TxMessageServiceImpl implements TxMessageService {
     }
 
     private void processMsgList(List<TxMessage> txMsgList) {
-        log.info("查询消息表：{}", JSON.toJSON(txMsgList));
+        if (txMsgList != null && !txMsgList.isEmpty()) {
+            log.info("查询消息表：{}", JSON.toJSON(txMsgList));
+        }
         if (txMsgList != null && !txMsgList.isEmpty()) {
             for (TxMessage txMessage : txMsgList) {
                 TxBody txBody = new TxBody();
