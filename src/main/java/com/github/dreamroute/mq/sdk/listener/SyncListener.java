@@ -1,21 +1,19 @@
 package com.github.dreamroute.mq.sdk.listener;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Random;
-
+import com.alibaba.fastjson.JSON;
+import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
+import com.github.dreamroute.mq.sdk.rocketmq.TxBody;
+import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
+import com.github.dreamroute.mq.sdk.service.TxMessageService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQLocalTransactionListener;
 import org.apache.rocketmq.spring.core.RocketMQLocalTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 
-import com.alibaba.fastjson.JSON;
-import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
-import com.github.dreamroute.mq.sdk.rocketmq.TxBody;
-import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
-import com.github.dreamroute.mq.sdk.service.TxMessageService;
-
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 /**
  * 监听器，同步消息：DB -> MQ，事务消息执行和回查依赖此类，每个应用（微服务）消息生产者需要继承此类，并且添加 <code>@Service</code>和<code>@RocketMQTransactionListener</code>注解，其中<code>@RocketMQTransactionListener</code>
@@ -24,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author w.dehai
  */
 @Slf4j
-@SuppressWarnings("rawtypes")
 public class SyncListener implements RocketMQLocalTransactionListener {
 
     @Autowired

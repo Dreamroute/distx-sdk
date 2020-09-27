@@ -1,14 +1,13 @@
 package com.github.dreamroute.mq.sdk.service.impl;
 
-import java.sql.Timestamp;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.dreamroute.mq.sdk.domain.TxMessageDel;
 import com.github.dreamroute.mq.sdk.mapper.TxMessageDelMapper;
 import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
 
 /**
  * 
@@ -16,10 +15,10 @@ import com.github.dreamroute.mq.sdk.service.TxMessageDelService;
  *
  */
 @Service
+@AllArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class TxMessageDelServiceImpl implements TxMessageDelService {
 
-    @Autowired
     private TxMessageDelMapper txMessageDelMapper;
 
     @Override
