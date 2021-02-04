@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>distx-sdk</artifactId>
-	<version>1.4-RELEASE</version>
+	<version>1.5-RELEASE</version>
 
 	<name>distx-sdk</name>
 	<url>https://github.com/Dreamroute/distx-sdk.git</url>
@@ -45,7 +45,6 @@
 		<dozer.version>5.5.1</dozer.version>
 		<lombok.version>1.18.8</lombok.version>
 		<fastjson.version>1.2.56</fastjson.version>
-		<sqlprinter.version>1.5-RELEASE</sqlprinter.version>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 		<curator-framework.version>4.2.0</curator-framework.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -101,13 +100,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.15</version>
-		</dependency>
-
-		<!-- SqlPrinter -->
-		<dependency>
-			<groupId>com.github.dreamroute</groupId>
-			<artifactId>sqlprinter</artifactId>
-			<version>${sqlprinter.version}</version>
 		</dependency>
 
 		<!-- other util -->
