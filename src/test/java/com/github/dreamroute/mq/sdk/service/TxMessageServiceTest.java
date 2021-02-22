@@ -1,5 +1,14 @@
 package com.github.dreamroute.mq.sdk.service;
 
+import com.alibaba.fastjson.JSON;
+import com.github.dreamroute.mq.sdk.domain.TxMessage;
+import com.github.dreamroute.mq.sdk.mapper.TxMessageMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +20,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.alibaba.fastjson.JSON;
-import com.github.dreamroute.mq.sdk.domain.TxMessage;
-import com.github.dreamroute.mq.sdk.mapper.TxMessageMapper;
-
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * CRUD测试类
  * 
@@ -31,8 +27,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SpringBootTest
-@RunWith(SpringRunner.class)
-public class TxMessageServiceTest {
+class TxMessageServiceTest {
 
     @Autowired
     private TxMessageService txMessageService;
@@ -43,30 +38,30 @@ public class TxMessageServiceTest {
     private int pageSize;
 
     @Test
-    public void insertTest() {
+    void insertTest() {
         TxMessage message = TxMessage.builder().topic("tx-msg").tag("tx-msg").createTime(new Timestamp(System.currentTimeMillis())).body("tx-msg").build();
         txMessageService.insert(message);
     }
 
     @Test
-    public void deleteByIdTest() {
+    void deleteByIdTest() {
         txMessageService.deleteById(1L);
     }
 
     @Test
-    public void selectTxMessageByPageTest() {
+    void selectTxMessageByPageTest() {
         List<TxMessage> data = txMessageService.selectTxMessageByPage(5, 3);
         System.err.println(data);
     }
     
     @Test
-    public void selectByIdRangeTest() {
+    void selectByIdRangeTest() {
         List<TxMessage> result = txMessageMapper.selectByIdRange(56611L, 56615L);
         System.err.println(result);
     }
 
     @Test
-    public void insertDbTest() throws InterruptedException {
+    void insertDbTest() throws InterruptedException {
         AtomicInteger count = new AtomicInteger(0);
         int size = 1;
         long start = System.currentTimeMillis();
@@ -92,51 +87,51 @@ public class TxMessageServiceTest {
      * 正常同步（用于生产环境）
      */
     @Test
-    public void syncTest() throws Exception {
+    void syncTest() throws Exception {
         txMessageService.syncTxMessage2RocketMq();
     }
 
     /**
      * 多线程同步（用于测试环境）
      */
-    @Test
-    public void syncTestWithThreadpool() throws Exception {
-        List<TxMessage> result = txMessageService.selectTxMessageByPage(1, 1);
-        Long firstRowId = null;
-        if (result != null && !result.isEmpty()) {
-            firstRowId = result.get(0).getId();
-        }
-        
-        if (firstRowId != null) {
-            int count = txMessageMapper.selectCount(null);
-            int totalPage = count / pageSize;
-            if (count % this.pageSize != 0) {
-                totalPage++;
-            }
-            
-            long first = firstRowId.longValue();
-            AtomicInteger page = new AtomicInteger(-1);
-            
-            long start = System.currentTimeMillis();
-            ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
-            List<Callable<String>> tasks = new ArrayList<>();
-            for (int i=0; i<totalPage; i++) {
-                tasks.add(() -> {
-                    int pg = page.incrementAndGet();
-                    txMessageService.syncTxMessage2RocketMq(first + pg * pageSize, first + (pg + 1) * pageSize);
-                    return null;
-                });
-            }
-            pool.invokeAll(tasks);
-            long end = System.currentTimeMillis();
-            long consum = end - start;
-            System.err.println("耗时" + consum);
-            Thread.sleep(Long.MAX_VALUE);
-        }
-    }
+//    @Test
+//    void syncTestWithThreadpool() throws Exception {
+//        List<TxMessage> result = txMessageService.selectTxMessageByPage(1, 1);
+//        Long firstRowId = null;
+//        if (result != null && !result.isEmpty()) {
+//            firstRowId = result.get(0).getId();
+//        }
+//
+//        if (firstRowId != null) {
+//            int count = txMessageMapper.selectCount(null);
+//            int totalPage = count / pageSize;
+//            if (count % this.pageSize != 0) {
+//                totalPage++;
+//            }
+//
+//            long first = firstRowId.longValue();
+//            AtomicInteger page = new AtomicInteger(-1);
+//
+//            long start = System.currentTimeMillis();
+//            ExecutorService pool = new ThreadPoolExecutor(10, 10, 5, TimeUnit.SECONDS, new LinkedBlockingDeque<>(100), r -> new Thread(r, "nnm"));
+//            List<Callable<String>> tasks = new ArrayList<>();
+//            for (int i=0; i<totalPage; i++) {
+//                tasks.add(() -> {
+//                    int pg = page.incrementAndGet();
+//                    txMessageService.syncTxMessage2RocketMq(first + pg * pageSize, first + (pg + 1) * pageSize);
+//                    return null;
+//                });
+//            }
+//            pool.invokeAll(tasks);
+//            long end = System.currentTimeMillis();
+//            long consum = end - start;
+//            System.err.println("耗时" + consum);
+//            Thread.sleep(Long.MAX_VALUE);
+//        }
+//    }
     
     @Test
-    public void startContainerTest() throws Exception {
+    void startContainerTest() throws Exception {
         Thread.sleep(Long.MAX_VALUE);
     }
 

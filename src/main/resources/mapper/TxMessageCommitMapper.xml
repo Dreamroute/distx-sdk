@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.dreamroute.mq.sdk.mapper.TxMessageCommitMapper">
+	<select id="insert" parameterType="com.github.dreamroute.mq.sdk.domain.TxMessageCommit">
+		insert into tx_message_commit(`body`, `create_time`, `message_table_id`) values(#{body}, #{createTime}, #{messageTableId})
+	</select>
+</mapper>

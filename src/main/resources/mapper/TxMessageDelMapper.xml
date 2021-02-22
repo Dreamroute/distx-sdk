@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.dreamroute.mq.sdk.mapper.TxMessageDelMapper">
+	<insert id="insert" parameterType="com.github.dreamroute.mq.sdk.domain.TxMessageDel">
+		INSERT INTO `me`.`tx_message_del`(`topic`, `tag`, `body`, `create_time`) VALUES (#{topic}, #{tag}, #{body}, #{create_time});
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="long" resultType="com.github.dreamroute.mq.sdk.domain.TxMessageDel">
+		select * from tx_message_del where id = #{id}
+	</select>
+</mapper>

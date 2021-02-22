@@ -1,19 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.2</version>
+	</parent>
+
 	<groupId>com.github.dreamroute</groupId>
 	<artifactId>distx-sdk</artifactId>
 	<version>1.5-RELEASE</version>
 
 	<name>distx-sdk</name>
 	<url>https://github.com/Dreamroute/distx-sdk.git</url>
-	<description>https://github.com/Dreamroute/distx-sdk.git</description>
+	<description>基于消息队列的分布式事务解决方案</description>
 
 	<licenses>
 		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<name>MIT</name>
+			<url>https://opensource.org/licenses/mit-license.php</url>
 		</license>
 	</licenses>
 
@@ -25,8 +31,6 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:Dreamroute/distx-sdk.git</connection>
-		<developerConnection>scm:git:git@github.com:Dreamroute/distx-sdk.git</developerConnection>
 		<url>https://github.com/Dreamroute/distx-sdk</url>
 	</scm>
 
@@ -38,54 +42,49 @@
 	</distributionManagement>
 
 	<properties>
+
+		<!-- 编码相关 -->
 		<java.version>1.8</java.version>
-		<junit.version>4.12</junit.version>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+
 		<vjkit.version>1.0.8</vjkit.version>
-		<druid.version>1.1.14</druid.version>
 		<dozer.version>5.5.1</dozer.version>
+		<druid.version>1.1.14</druid.version>
 		<lombok.version>1.18.8</lombok.version>
 		<fastjson.version>1.2.56</fastjson.version>
-		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-		<curator-framework.version>4.2.0</curator-framework.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mapper-spring-boot-starter.version>2.1.5</mapper-spring-boot-starter.version>
-		<spring-boot-starter-web.version>2.1.3.RELEASE</spring-boot-starter-web.version>
 		<rocketmq-spring-boot-starter.version>2.0.3</rocketmq-spring-boot-starter.version>
-		<pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
 	</properties>
 
 	<dependencies>
 
-		<!-- junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- MyBatis -->
+		<!-- 由于此组件属于基础组件，需要尽量减少依赖，这里操作数据库使用原生MyBatis而不用MyBatis-Pro/Mapper/Plus这种三方组件，以达到旧系统也可以轻松接入 -->
 		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper-spring-boot-starter</artifactId>
-			<version>${mapper-spring-boot-starter.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>${pagehelper-spring-boot-starter.version}</version>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>2.1.4</version>
 		</dependency>
 
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>${spring-boot-starter-web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>${spring-boot-starter-web.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>junit</artifactId>
+					<groupId>junit</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- RocketMQ -->
@@ -128,6 +127,11 @@
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 			<version>${dozer.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>5.3.3</version>
 		</dependency>
 	</dependencies>
 

@@ -12,4 +12,16 @@
 		    id &gt;= #{minId} 
 		    AND id &lt; #{maxId}
     </select>
+
+	<insert id="insert" parameterType="com.github.dreamroute.mq.sdk.domain.TxMessage">
+		insert into tx_message(`topic`, `tag`, `body`, `create_time`) values(#{topic}, #{tag}, #{body}, #{createTime})
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="long" resultType="com.github.dreamroute.mq.sdk.domain.TxMessage">
+		select * from tx_message where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="long">
+		delete from tx_message where id = #{id} limit 1
+	</delete>
 </mapper>
